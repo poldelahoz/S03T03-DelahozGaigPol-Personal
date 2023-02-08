@@ -1,0 +1,21 @@
+{
+  "name" : "Test",
+  "articles" : [ {
+    "price" : 12.5,
+    "height" : 1.5
+  }, {
+    "price" : 2.5,
+    "color" : "Vermell"
+  }, {
+    "price" : 42.5,
+    "material" : "Fusta"
+  } ],
+  "tickets" : [ {
+    "totalPrice" : 27.5,
+    "articles" : {
+      "Color: Vermell | Preu: 2,50€" : 1,
+      "Altura: 1.5 | Preu: 12,50€" : 2
+    },
+    "created" : 1675535534136
+  } ]
+}
