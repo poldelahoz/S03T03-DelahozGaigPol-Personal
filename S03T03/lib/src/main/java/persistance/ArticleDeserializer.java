@@ -42,7 +42,7 @@ public class ArticleDeserializer extends StdDeserializer<Article> {
         }else {
         	Decor decor = new Decor();
         	decor.setPrice(Float.parseFloat(productNode.get("price").textValue()));
-        	decor.setHeight(Material.valueOf(productNode.get("material").textValue()));
+        	decor.setMaterial(Material.valueOf(productNode.get("material").textValue()));
         	return decor;
         }        
     }

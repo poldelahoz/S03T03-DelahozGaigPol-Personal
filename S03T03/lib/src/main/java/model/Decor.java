@@ -29,18 +29,18 @@ public class Decor extends Article{
 	}
 	
 	@JsonGetter("material")
-	public Material getHeight() {
+	public Material getMaterial() {
 		return material;
 	}
 	
 	@JsonSetter("material")
-	public void setHeight(Material material) {
+	public void setMaterial(Material material) {
 		this.material = material;
 	}
 	
 	@Override
 	public String toString() {
-		return "Material: " + material + " | Preu: " + this.df.format(this.getPrice());
+		return "Type: Decor | Material: " + material + " | Preu: " + this.df.format(this.getPrice());
 	}
 	
 	@Override

@@ -23,11 +23,10 @@ public class Main {
 				"Retirar decoració.", // OK
 				"Mostrar tot el stock sense quantitats.", // OK
 				"Mostrar tot el stock amb quantitats.",
-				"Mostrar el valor total de la floristeria.",
-				"Crear ticket de compra.",
-				"Mostrar compres.",
-				"Mostrar total facturat.",
-				"Serialitzar floristeria a fitxer JSON"
+				"Mostrar el valor total de la floristeria.", // OK
+				"Crear ticket de compra.", // OK
+				"Mostrar compres.", // OK
+				"Mostrar total facturat." // OK
 		};
 		
 		menuC.setOptions(options);
@@ -35,7 +34,7 @@ public class Main {
 		int option;
         boolean exit = false;
         MenuOptions menuOptions = new MenuOptions();
-        //menuOptions.fillWithDemoData();
+        menuOptions.fillWithDemoData();
 		while (!exit){
         	menuC.printMenu();
         	option = Entry.readInt("", menuC.getOptionsLength());

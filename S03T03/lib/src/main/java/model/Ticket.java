@@ -9,10 +9,15 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import persistance.ArticleStockDeserializer;
 
 public class Ticket {
 	
+	@JsonDeserialize(keyUsing = ArticleStockDeserializer.class)
 	private Map<Article, Integer> articles;
 	private final Date created;
 	private final DecimalFormat df = new DecimalFormat("0.00€");
@@ -43,6 +48,7 @@ public class Ticket {
 		articles.put(article, quantity);
 	}
 
+	@JsonIgnore
 	public double getTotalPrice() {
 		double totalPrice = 0;
 		for (Map.Entry<Article, Integer> e : articles.entrySet()) {

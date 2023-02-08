@@ -1,21 +1,23 @@
 {
   "name" : "Test",
   "articles" : [ {
+    "type" : "Tree",
     "price" : 12.5,
     "height" : 1.5
   }, {
+    "type" : "Flower",
     "price" : 2.5,
     "color" : "Vermell"
   }, {
+    "type" : "Decor",
     "price" : 42.5,
     "material" : "Fusta"
   } ],
   "tickets" : [ {
-    "totalPrice" : 27.5,
     "articles" : {
-      "Color: Vermell | Preu: 2,50€" : 1,
-      "Altura: 1.5 | Preu: 12,50€" : 2
+      "Type: Flower | Color: Vermell | Preu: 2,50 €" : 1,
+      "Type: Tree | Altura: 1.5 | Preu: 12,50 €" : 2
     },
-    "created" : 1675535534136
+    "created" : 1675854870489
   } ]
 }

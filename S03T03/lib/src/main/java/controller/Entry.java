@@ -3,8 +3,6 @@ package controller;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.annotation.Nullable;
-
 public class Entry {
 	
 	private static final Scanner scanner = new Scanner(System.in);

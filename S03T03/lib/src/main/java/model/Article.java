@@ -8,9 +8,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import persistance.ArticleDeserializer;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({ 
@@ -18,11 +15,10 @@ import persistance.ArticleDeserializer;
 	  @Type(value = Flower.class, name = "Flower"),
 	  @Type(value = Decor.class, name = "Decor")
 	})
-//@JsonDeserialize(using = ArticleDeserializer.class)
 public abstract class Article{
 
 	private float price;
-	protected final DecimalFormat df = new DecimalFormat("0.00€");
+	protected final DecimalFormat df = new DecimalFormat("0.00 €");
 	
 	@JsonCreator
 	protected Article(float price) {

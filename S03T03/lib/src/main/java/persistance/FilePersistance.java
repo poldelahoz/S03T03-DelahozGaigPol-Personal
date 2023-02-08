@@ -25,15 +25,12 @@ public class FilePersistance {
 	public static Florist retrieve() {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.registerSubtypes(new NamedType(Tree.class, "Tree"));
-			mapper.registerSubtypes(new NamedType(Flower.class, "Flower"));
-			mapper.registerSubtypes(new NamedType(Decor.class, "Decor"));
-			SimpleModule module = new SimpleModule();
+			/*SimpleModule module = new SimpleModule();
 		    module.addDeserializer(Article.class, new ArticleDeserializer());
-		    mapper.registerModule(module);
+		    mapper.registerModule(module);*/
 			File file = new File(filePath);
 			if(!file.createNewFile()) {
-				return mapper.readValue(Paths.get(filePath).toFile(), Florist.class);
+				return mapper.readValue(new File(filePath), Florist.class);
 			}
 			return null;
 		} catch (IOException e) {
@@ -45,9 +42,6 @@ public class FilePersistance {
 	public static void update(Florist florist) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.registerSubtypes(new NamedType(Tree.class, "Tree"));
-			mapper.registerSubtypes(new NamedType(Flower.class, "Flower"));
-			mapper.registerSubtypes(new NamedType(Decor.class, "Decor"));
 		    String jsonStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(florist);
 			writeFile(jsonStr);
 		} catch (JsonProcessingException e) {
