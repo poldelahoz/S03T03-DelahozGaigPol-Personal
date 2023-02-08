@@ -1,7 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import exception.EmptyFloristException;
+import exception.NonExistantArticle;
 import model.Article;
 import model.Decor;
 import model.Decor.Material;
@@ -23,15 +28,6 @@ public class FloristController {
 	public static FloristController getInstance() {
 		if (instance == null) {
 			instance = new FloristController();
-		}
-		return instance;
-	}
-	
-	public static FloristController getInstance(Florist model, FloristView view) {
-		if (instance == null) {
-			instance = new FloristController();
-			instance.setModel(model);
-			instance.setView(view);
 		}
 		return instance;
 	}
@@ -61,85 +57,140 @@ public class FloristController {
 	   return model.getTickets();       
 	}
 	
-	public void addTree() {
-		Tree tree = view.getTree();
-		addArticle(tree);
+	public void addTree() throws EmptyFloristException {
+		if (model != null) {
+			Tree tree = view.getTree();
+			addArticle(tree);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
-	public void addFlower() {
-		Flower flower = view.getFlower();
-		addArticle(flower);
+	public void addFlower() throws EmptyFloristException {
+		if (model != null) {
+			Flower flower = view.getFlower();
+			addArticle(flower);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
-	public void addDecor() {
-		Decor decor = view.getDecor();
-		addArticle(decor);
+	public void addDecor() throws EmptyFloristException {
+		if (model != null) {
+			Decor decor = view.getDecor();
+			addArticle(decor);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
 	private void addArticle(Article article) {
-		List<Article> articles = model.getArticles();
-		articles.add(article);
+		Map<Article, Integer> articles = model.getArticles();
+		Integer sotck = articles.putIfAbsent(article, 1);
+		if(sotck != null) {
+			sotck++;
+			articles.put(article, sotck);
+		}
 		model.setArticles(articles);
 		System.out.println("Article afegit correctament.");
 		FilePersistance.update(model);
 	}
 	
-	public void removeTree() {
-		Tree tree = view.getTree();
-		removeArticle(tree);
+	public void removeTree() throws EmptyFloristException, NonExistantArticle {
+		if (model != null) {
+			Tree tree = view.getTree();
+			removeArticle(tree);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
-	public void removeFlower() {
-		Flower flower = view.getFlower();
-		removeArticle(flower);
+	public void removeFlower() throws EmptyFloristException, NonExistantArticle {
+		if (model != null) {
+			Flower flower = view.getFlower();
+			removeArticle(flower);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
-	public void removeDecor() {
-		Decor decor = view.getDecor();
-		removeArticle(decor);
+	public void removeDecor() throws EmptyFloristException, NonExistantArticle {
+		if (model != null) {
+			Decor decor = view.getDecor();
+			removeArticle(decor);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
-	private void removeArticle(Article article) {
-		List<Article> articles = model.getArticles();
-		if(articles.remove(article)) {
+	private void removeArticle(Article article) throws NonExistantArticle {
+		Map<Article, Integer> articles = model.getArticles();
+		Integer stock = articles.get(article);
+		if(stock != null) {
+			stock--;
+			if (stock > 0) {
+				articles.put(article, stock);
+			}else {
+				articles.remove(article);
+			}
 			model.setArticles(articles);
 			System.out.println("Article eliminat correctament.");
 			FilePersistance.update(model);
 		}else {
-			System.err.println("No s'ha pogut eliminar l'article perquè no existeix en aquesta floristeria.");
+			throw new NonExistantArticle("No s'ha pogut eliminar l'article perquè no existeix en aquesta floristeria.");
 		}
 	}
 	
 	public void printStock() {
-		view.printStock(model.getArticles());
+		List<Article> articlesWoStock = model.getArticles().keySet().stream().collect(Collectors.toCollection(ArrayList::new));
+		view.printStock(articlesWoStock);
 	}
 	
-	public double getFloristValue() {
-		double value = 0;
-		List<Article> articles = model.getArticles();
-		for(Article article : articles)
-			value += article.getPrice();
-		return value;
+	public void printStockWithQuantities() {
+		Map<Article, Integer> articles = model.getArticles();
+		view.printStockWithQuantities(articles);
 	}
 	
-	public void addTicket() {
-		Ticket ticket = view.getTicket(model.getArticles());
-		List<Ticket> tickets = model.getTickets();
-		tickets.add(ticket);
-		model.setTickets(tickets);
-		FilePersistance.update(model);
+	public double getFloristValue() throws EmptyFloristException {
+		if (model != null) {
+			double value = 0;
+			Map<Article, Integer> articles = model.getArticles();
+			for (Map.Entry<Article, Integer> e : articles.entrySet()) {
+				value += e.getKey().getPrice()*e.getValue();
+			}
+			return value;
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
+	}
+	
+	public void addTicket() throws EmptyFloristException {
+		if (model != null) {
+			List<Article> articlesWoStock = model.getArticles().keySet().stream().collect(Collectors.toCollection(ArrayList::new));
+			Ticket ticket = view.getTicket(articlesWoStock);
+			List<Ticket> tickets = model.getTickets();
+			tickets.add(ticket);
+			model.setTickets(tickets);
+			FilePersistance.update(model);
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
 	public void printTickets() {
 		view.printTickets(model.getTickets());
 	}
 	
-	public double getTotalBilled() {
-		double value = 0;
-		List<Ticket> tickets = model.getTickets();
-		for(Ticket ticket : tickets)
-			value += ticket.getTotalPrice();
-		return value;
+	public double getTotalBilled() throws EmptyFloristException {
+		if (model != null) {
+			double value = 0;
+			List<Ticket> tickets = model.getTickets();
+			for(Ticket ticket : tickets)
+				value += ticket.getTotalPrice();
+			return value;
+		}else {
+			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
+		}
 	}
 	
 	public void addDemoData() {
@@ -148,13 +199,13 @@ public class FloristController {
 		String name = "Test";
 		setFloristName(name);
 		
-		List<Article> articles = model.getArticles();
-		Tree tree = new Tree(12.50f, 1.50f);
-		articles.add(tree);
-		Flower flower = new Flower(2.50f, "Vermell");
-		articles.add(flower);
-		Decor decor = new Decor(42.50f, Material.Fusta);
-		articles.add(decor);
+		Map<Article, Integer> articles = model.getArticles();
+		Tree tree = new Tree(10.00f, 1.50f);
+		articles.put(tree, 1);
+		Flower flower = new Flower(2.00f, "Vermell");
+		articles.put(flower, 2);
+		Decor decor = new Decor(40.00f, Material.Fusta);
+		articles.put(decor, 3);
 		model.setArticles(articles);
 		
 		Ticket ticket = new Ticket();

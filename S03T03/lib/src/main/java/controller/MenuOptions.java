@@ -2,28 +2,23 @@ package controller;
 
 import java.text.DecimalFormat;
 
+import exception.EmptyFloristException;
+import exception.NonExistantArticle;
 import model.Florist;
-import persistance.FilePersistance;
-import view.FloristView;
 
 public class MenuOptions {
 	
-	private static FloristController floristC;
-	private final DecimalFormat df = new DecimalFormat("0.00€");
+	private static FloristController floristC = FloristController.getInstance();
+	private static final DecimalFormat df = new DecimalFormat("0.00€");
 	
-	public MenuOptions() {
-		floristC = FloristController.getInstance();
-		floristC.setView(new FloristView());
-		Florist florist = FilePersistance.retrieve();
-		if (florist != null) {
-			floristC.setModel(florist);
-		}
-	};
-	
-	public void option1() {
-		if (floristC.getModel() == null) {
-			// TODO: throw new custom exception FloristAlreadyExists
-			System.out.println("Ja existeix una floristeria.");
+	public static void option1() {
+		if (floristC.getModel() != null) {
+			boolean changeName = Entry.readSiNo("Ja existeix una floristeria. Vols canviar-li el nom? (S/N)");
+			if(changeName) {
+				String name = Entry.readString("Introdueix el nom de la floristeria: ");
+				floristC.setFloristName(name);
+				System.out.println("Nom de la floristeria canviat correctament.");
+			}
 		}else {
 			Florist florist = new Florist();
 			floristC.setModel(florist);
@@ -33,56 +28,91 @@ public class MenuOptions {
 		}
 	}
 	
-	public void option2() {
-		floristC.addTree();
+	public static void option2(){
+		try {
+			floristC.addTree();
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option3() {
-		floristC.addFlower();
+	public static void option3() {
+		try {
+			floristC.addFlower();
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option4() {
-		floristC.addDecor();
+	public static void option4() {
+		try {
+			floristC.addDecor();
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option5() {
-		floristC.removeTree();
+	public static void option5() {
+		try {
+			floristC.removeTree();
+		} catch (EmptyFloristException | NonExistantArticle e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option6() {
-		floristC.removeFlower();
+	public static void option6() {
+		try {
+			floristC.removeFlower();
+		} catch (EmptyFloristException | NonExistantArticle e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option7() {
-		floristC.removeDecor();
+	public static void option7() {
+		try {
+			floristC.removeDecor();
+		} catch (EmptyFloristException | NonExistantArticle e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option8() {
+	public static void option8() {
 		floristC.printStock();
 	}
 	
-	public void option10() {
-		System.out.println("Valor total de la floristeria: " + df.format(floristC.getFloristValue()));
+	public static void option9() {
+		floristC.printStockWithQuantities();
 	}
 	
-	public void option11() {
-		boolean askForMore;
-		do {
-			floristC.addTicket();
-			askForMore = Entry.readSiNo("Vols afegir un altre ticket? (S/N)");
-		}while(askForMore);
+	public static void option10() {
+		try {
+			System.out.println("Valor total de la floristeria: " + df.format(floristC.getFloristValue()));
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
-	public void option12() {
+	public static void option11() {
+		try {
+			boolean askForMore;
+			do {
+				floristC.addTicket();
+				askForMore = Entry.readSiNo("Vols afegir un altre ticket? (S/N)");
+			}while(askForMore);
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public static void option12() {
 		floristC.printTickets();
 	}
 	
-	public void option13() {
-		System.out.println("Valor total facturat: " + df.format(floristC.getTotalBilled()));
+	public static void option13() {
+		try {
+			System.out.println("Valor total facturat: " + df.format(floristC.getTotalBilled()));
+		} catch (EmptyFloristException e) {
+			System.out.println(e.getMessage());
+		}
 	}
-	
-	public void fillWithDemoData() {
-		floristC.addDemoData();		
-	}
-	
 }

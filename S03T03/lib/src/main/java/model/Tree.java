@@ -35,7 +35,7 @@ public class Tree extends Article{
 
 	@Override
 	public String toString() {
-		return "Type: Tree | Altura: " + height + " | Preu: " + this.df.format(this.getPrice());
+		return "Tipus: Tree | Altura: " + height + " | Preu: " + this.df.format(this.getPrice());
 	}
 	
 	@Override

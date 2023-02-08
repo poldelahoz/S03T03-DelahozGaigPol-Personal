@@ -52,8 +52,7 @@ public class Ticket {
 	public double getTotalPrice() {
 		double totalPrice = 0;
 		for (Map.Entry<Article, Integer> e : articles.entrySet()) {
-			for (int i = 0; i < e.getValue(); i++)
-				totalPrice += e.getKey().getPrice();
+			totalPrice += e.getKey().getPrice()*e.getValue();
 		}
 		return totalPrice;
 	}

@@ -40,7 +40,7 @@ public class Decor extends Article{
 	
 	@Override
 	public String toString() {
-		return "Type: Decor | Material: " + material + " | Preu: " + this.df.format(this.getPrice());
+		return "Tipus: Decor | Material: " + material + " | Preu: " + this.df.format(this.getPrice());
 	}
 	
 	@Override

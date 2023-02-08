@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import controller.Entry;
@@ -61,8 +62,31 @@ public class FloristView {
 	            .filter(c -> c instanceof Decor)
 	            .map(c -> (Decor) c)
 	            .collect(Collectors.toList());
-		System.out.println("DESCORACIÓ:");
+		System.out.println("DECORACIÓ:");
 		decors.forEach(System.out::println);
+		System.out.println();
+	}
+	
+	public void printStockWithQuantities(Map<Article, Integer> articles) {
+		Map<Article, Integer> trees = articles.entrySet()
+		        .stream().filter(c -> c.getKey() instanceof Tree)
+		        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		System.out.println("ARBRES:");
+		trees.forEach( (a,b) -> System.out.println(a.toString() + " | Stock: " + b));
+		System.out.println();
+		
+		Map<Article, Integer> flowers = articles.entrySet()
+		        .stream().filter(c -> c.getKey() instanceof Flower)
+		        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		System.out.println("FLORS:");
+		flowers.forEach( (a,b) -> System.out.println(a.toString() + " | Stock: " + b));
+		System.out.println();
+		
+		Map<Article, Integer> decors = articles.entrySet()
+		        .stream().filter(c -> c.getKey() instanceof Decor)
+		        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		System.out.println("DECORACIÓ:");
+		decors.forEach( (a,b) -> System.out.println(a.toString() + " | Stock: " + b));
 		System.out.println();
 	}
 	

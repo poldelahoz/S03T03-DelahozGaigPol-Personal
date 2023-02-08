@@ -35,7 +35,7 @@ public class Flower extends Article{
 	
 	@Override
 	public String toString() {
-		return "Type: Flower | Color: " + color + " | Preu: " + this.df.format(this.getPrice());
+		return "Tipus: Flower | Color: " + color + " | Preu: " + this.df.format(this.getPrice());
 	}
 	
 	@Override

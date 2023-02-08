@@ -26,7 +26,7 @@ public class ArticleStockDeserializer extends KeyDeserializer {
 		}else if(type.equals("Flower")) {
 			Flower flower = new Flower();
 			flower.setPrice(price);
-			flower.setColor(values[2].trim());
+			flower.setColor(values[4].trim());
 			return flower;
 		}else {
 			Decor decor = new Decor();
