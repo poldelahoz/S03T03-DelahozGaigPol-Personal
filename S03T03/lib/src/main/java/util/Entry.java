@@ -1,4 +1,4 @@
-package controller;
+package util;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,7 +9,7 @@ public class Entry {
 	
 	public static byte readByte(String missatge) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			byte b = scanner.nextByte();
 			scanner.nextLine();
 			return b;
@@ -22,7 +22,7 @@ public class Entry {
 	
 	public static int readInt(String missatge, int max) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			int i = scanner.nextInt();
 			scanner.nextLine();
 			if (max > 0 && i > max)
@@ -41,7 +41,7 @@ public class Entry {
 	
 	public static float readFloat(String missatge) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			float f = scanner.nextFloat();
 			scanner.nextLine();
 			return f;
@@ -54,7 +54,7 @@ public class Entry {
 	
 	public static double readDouble(String missatge) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			double d = scanner.nextDouble();
 			scanner.nextLine();
 			return d;
@@ -67,7 +67,7 @@ public class Entry {
 	
 	public static char readChar(String missatge) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			String out = scanner.nextLine();
 			if (out.length() == 1)
 				return out.charAt(0);
@@ -92,7 +92,7 @@ public class Entry {
 	
 	public static boolean readSiNo(String missatge) {
 		try {
-			System.out.println(missatge);
+			System.out.print(missatge);
 			String out = scanner.nextLine();
 			char c;
 			if (out.length() == 1)

@@ -1,7 +1,8 @@
-package controller;
+package util;
 
 import java.text.DecimalFormat;
 
+import controller.FloristController;
 import exception.EmptyFloristException;
 import exception.NonExistantArticle;
 import model.Florist;

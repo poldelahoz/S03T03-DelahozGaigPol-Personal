@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import controller.Entry;
+import exception.NonExistantArticle;
 import model.Article;
 import model.Decor;
 import model.Decor.Material;
+import util.Entry;
 import model.Flower;
 import model.Ticket;
 import model.Tree;
@@ -100,46 +101,49 @@ public class FloristView {
 		boolean askForMore;
 		Ticket ticket = new Ticket();
 		do {
-			System.out.println();
-			for (int i = 1; i <= options.length; i++) {
-				System.out.println(i + ".- " + options[i-1]);
+			try {
+				System.out.println();
+				for (int i = 1; i <= options.length; i++) {
+					System.out.println(i + ".- " + options[i-1]);
+				}
+				System.out.println();
+		        option = Entry.readInt("Quin tipus d'article vols afegir al ticket?: ", 3);
+		        Integer quantity;
+		        switch (option){
+			        case 1:
+			        	Tree tree = getTree();
+			        	if(articles.contains(tree)) {
+			        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
+					        ticket.addArticle(tree, quantity);
+			    		}else {
+			    			throw new NonExistantArticle("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
+			    		}
+			        	break;
+			        case 2: 
+			        	Flower flower = getFlower();
+			        	if(articles.contains(flower)) {
+			        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
+			        		ticket.addArticle(flower, quantity);
+			    		}else {
+			    			throw new NonExistantArticle("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
+			    		}
+			        	break;
+			        case 3: 
+			        	Decor decor = getDecor();
+			        	if(articles.contains(decor)) {
+			        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
+			        		ticket.addArticle(decor, quantity);
+			    		}else {
+			    			throw new NonExistantArticle("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
+			    		}
+			        	break;
+			        default: System.out.println("Només números entre 1 i 3");
+			    }
+			}catch(NonExistantArticle e) {
+				System.out.println(e.getMessage());
 			}
-			System.out.println();
-	        option = Entry.readInt("Quin tipus d'article vols afegir al ticket?: ", 3);
-	        Integer quantity;
-	        switch (option){
-		        case 1:
-		        	Tree tree = getTree();
-		        	if(articles.contains(tree)) {
-		        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
-				        ticket.addArticle(tree, quantity);
-		    		}else {
-		    			System.out.println("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
-		    		}
-		        	break;
-		        case 2: 
-		        	Flower flower = getFlower();
-		        	if(articles.contains(flower)) {
-		        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
-		        		ticket.addArticle(flower, quantity);
-		    		}else {
-		    			System.out.println("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
-		    		}
-		        	break;
-		        case 3: 
-		        	Decor decor = getDecor();
-		        	if(articles.contains(decor)) {
-		        		quantity = Entry.readInt("Introdueix la quantitat d'aquest article al ticket: ", 0);
-		        		ticket.addArticle(decor, quantity);
-		    		}else {
-		    			System.out.println("No s'ha pogut afegir l'article al ticket perquè no existeix en aquesta floristeria.");
-		    		}
-		        	break;
-		        default: System.out.println("Només números entre 1 i 3");
-		    }
 			askForMore = Entry.readSiNo("Vols afegir un altre producte al ticket? (S/N)");
 		}while(askForMore);
-		
 		return ticket;
 	}
 	

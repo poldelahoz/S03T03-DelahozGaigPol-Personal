@@ -1,12 +1,12 @@
 package view;
 
-import controller.Entry;
 import controller.FloristController;
 import controller.MenuController;
-import controller.MenuOptions;
 import model.Florist;
 import model.Menu;
 import persistance.FilePersistance;
+import util.Entry;
+import util.MenuOptions;
 
 public class Main {
 

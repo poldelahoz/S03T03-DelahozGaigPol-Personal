@@ -168,10 +168,12 @@ public class FloristController {
 		if (model != null) {
 			List<Article> articlesWoStock = model.getArticles().keySet().stream().collect(Collectors.toCollection(ArrayList::new));
 			Ticket ticket = view.getTicket(articlesWoStock);
-			List<Ticket> tickets = model.getTickets();
-			tickets.add(ticket);
-			model.setTickets(tickets);
-			FilePersistance.update(model);
+			if (ticket.getArticles().size() > 0) {
+				List<Ticket> tickets = model.getTickets();
+				tickets.add(ticket);
+				model.setTickets(tickets);
+				FilePersistance.update(model);
+			}
 		}else {
 			throw new EmptyFloristException("No s'ha creat cap Floristeria. Primer de tot, afegeix-ne una.");
 		}
